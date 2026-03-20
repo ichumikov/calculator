@@ -1,0 +1,3 @@
+/home/igor/calculator/build/CMakeFiles/calculator.dir
+/home/igor/calculator/build/CMakeFiles/edit_cache.dir
+/home/igor/calculator/build/CMakeFiles/rebuild_cache.dir
