@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/CMakeFiles/libmath-populate"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/CMakeFiles/libmath-populate.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/CMakeFiles/libmath-populate-complete.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-build.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-configure.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-download.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-install.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-mkdir.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-patch.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-test.rule"
+		},
+		{
+			"file" : "/home/igor/calculator/build/_deps/libmath-subbuild/libmath-populate-prefix/src/libmath-populate-stamp/libmath-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"libmath-populate"
+		],
+		"name" : "libmath-populate"
+	}
+}

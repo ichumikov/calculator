@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/igor/calculator/src
+CXX_INCLUDES = -I/home/igor/calculator/src -I/home/igor/calculator/build/_deps/libmath-src/include
 
 CXX_FLAGS = -g
 

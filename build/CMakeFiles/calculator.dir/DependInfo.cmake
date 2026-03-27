@@ -10,7 +10,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/igor/calculator/src/app.cpp" "CMakeFiles/calculator.dir/src/app.cpp.o" "gcc" "CMakeFiles/calculator.dir/src/app.cpp.o.d"
   "/home/igor/calculator/src/main.cpp" "CMakeFiles/calculator.dir/src/main.cpp.o" "gcc" "CMakeFiles/calculator.dir/src/main.cpp.o.d"
-  "/home/igor/calculator/src/math.cpp" "CMakeFiles/calculator.dir/src/math.cpp.o" "gcc" "CMakeFiles/calculator.dir/src/math.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -1,0 +1,3 @@
+/home/igor/calculator/build/_deps/libmath-subbuild/CMakeFiles/libmath-populate.dir
+/home/igor/calculator/build/_deps/libmath-subbuild/CMakeFiles/edit_cache.dir
+/home/igor/calculator/build/_deps/libmath-subbuild/CMakeFiles/rebuild_cache.dir

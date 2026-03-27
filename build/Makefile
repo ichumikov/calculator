@@ -129,6 +129,19 @@ calculator/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/calculator.dir/build.make CMakeFiles/calculator.dir/build
 .PHONY : calculator/fast
 
+#=============================================================================
+# Target rules for targets named libmath
+
+# Build rule for target.
+libmath: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 libmath
+.PHONY : libmath
+
+# fast build rule for target.
+libmath/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/libmath-build/CMakeFiles/libmath.dir/build.make _deps/libmath-build/CMakeFiles/libmath.dir/build
+.PHONY : libmath/fast
+
 src/app.o: src/app.cpp.o
 .PHONY : src/app.o
 
@@ -177,30 +190,6 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/calculator.dir/build.make CMakeFiles/calculator.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/math.o: src/math.cpp.o
-.PHONY : src/math.o
-
-# target to build an object file
-src/math.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/calculator.dir/build.make CMakeFiles/calculator.dir/src/math.cpp.o
-.PHONY : src/math.cpp.o
-
-src/math.i: src/math.cpp.i
-.PHONY : src/math.i
-
-# target to preprocess a source file
-src/math.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/calculator.dir/build.make CMakeFiles/calculator.dir/src/math.cpp.i
-.PHONY : src/math.cpp.i
-
-src/math.s: src/math.cpp.s
-.PHONY : src/math.s
-
-# target to generate assembly for a file
-src/math.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/calculator.dir/build.make CMakeFiles/calculator.dir/src/math.cpp.s
-.PHONY : src/math.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -210,15 +199,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... calculator"
+	@echo "... libmath"
 	@echo "... src/app.o"
 	@echo "... src/app.i"
 	@echo "... src/app.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/math.o"
-	@echo "... src/math.i"
-	@echo "... src/math.s"
 .PHONY : help
 
 

@@ -3,8 +3,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/calculator.dir/src/app.cpp.o.d"
   "CMakeFiles/calculator.dir/src/main.cpp.o"
   "CMakeFiles/calculator.dir/src/main.cpp.o.d"
-  "CMakeFiles/calculator.dir/src/math.cpp.o"
-  "CMakeFiles/calculator.dir/src/math.cpp.o.d"
   "calculator"
   "calculator.pdb"
 )
