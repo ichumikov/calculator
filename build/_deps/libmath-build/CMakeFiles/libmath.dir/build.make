@@ -73,7 +73,7 @@ _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.o: _deps/libmath-buil
 _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.o: _deps/libmath-src/src/libmath.cpp
 _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.o: _deps/libmath-build/CMakeFiles/libmath.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/igor/calculator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.o"
-	cd /home/igor/calculator/build/_deps/libmath-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.o -MF CMakeFiles/libmath.dir/src/libmath.cpp.o.d -o CMakeFiles/libmath.dir/src/libmath.cpp.o -c /home/igor/calculator/build/_deps/libmath-src/src/libmath.cpp
+	cd /home/igor/calculator/build/_deps/libmath-build && $(CMAKE_COMMAND) -E __run_co_compile --tidy="/usr/bin/clang-tidy;-extra-arg=-Wno-unknown-warning-option;-header-filter=.*;--extra-arg-before=--driver-mode=g++" --source=/home/igor/calculator/build/_deps/libmath-src/src/libmath.cpp -- /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.o -MF CMakeFiles/libmath.dir/src/libmath.cpp.o.d -o CMakeFiles/libmath.dir/src/libmath.cpp.o -c /home/igor/calculator/build/_deps/libmath-src/src/libmath.cpp
 
 _deps/libmath-build/CMakeFiles/libmath.dir/src/libmath.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/libmath.dir/src/libmath.cpp.i"
