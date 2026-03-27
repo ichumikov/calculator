@@ -1,7 +1,8 @@
 #include "app.h"
 #include "libmath.h"
+#include <cstdio>
 #include <cstdlib>
-#include <iostream>
+#include <getopt.h>
 struct Task
 {
     int value1{};
@@ -10,11 +11,24 @@ struct Task
     int status{};
     int result{};
 };
-static void parse(int argc, char** argv, Task& task)
+static bool parse(int argc, char** argv, Task& task)
 {
-    task.value1 = std::atoi(argv[1]);
-    task.operation = argv[2][0];
-    task.value2 = std::atoi(argv[3]);
+    static const option long_options[] = {
+        {"help", no_argument, nullptr, 'h'},
+        {nullptr, 0,          nullptr,  0 }
+    };
+    int opt;
+    while ((opt = getopt_long(argc, argv, "+h", long_options, nullptr)) != -1)
+    {
+        if (opt == 'h')
+            return false;
+    }
+    if (argc - optind != 3)
+        return false;
+    task.value1    = std::atoi(argv[optind]);
+    task.operation = argv[optind + 1][0];
+    task.value2    = std::atoi(argv[optind + 2]);
+    return true;
 }
 static void calculate(Task& task)
 {
@@ -47,48 +61,52 @@ static void output(const Task& task)
 {
     if (task.status == 0)
     {
-        std::cout << task.value1 << ' ' << task.operation << ' ' << task.value2
-                  << " = " << task.result << '\n';
+        printf("%d %c %d = %d\n", task.value1, task.operation, task.value2, task.result);
     }
     else if (task.status == -1)
     {
-        std::cout << "Error! Division by zero!\n";
+        printf("Error! Division by zero!\n");
     }
     else if (task.status == -2)
     {
-        std::cout << "Error! Factorial for negative number!\n";
+        printf("Error! Factorial for negative number!\n");
     }
     else if (task.status == -3)
     {
-        std::cout << "Error! Integer overflow!\n";
+        printf("Error! Integer overflow!\n");
     }
     else if (task.status == -4)
     {
-        std::cout << "Error! Negative power is not supported for integer result!\n";
+        printf("Error! Negative power is not supported for integer result!\n");
     }
     else if (task.status == 1)
     {
-        std::cout << "Error! Unknown operation!\n";
+        printf("Error! Unknown operation!\n");
     }
     else
     {
-        std::cout << "Unknown error\n";
+        printf("Unknown error\n");
     }
 }
 namespace app
 {
 void run(int argc, char** argv)
 {
-    if (argc != 4)
+    Task task;
+    if (!parse(argc, argv, task))
     {
-        std::cerr << "Usage: " << argv[0] << " <value1> <op> <value2>\n";
-        std::cerr << "Examples:\n";
-        std::cerr << "  " << argv[0] << " 2 + 3\n";
-        std::cerr << "  " << argv[0] << " 5 ! 0\n";
+        fprintf(stderr, "Usage: %s <value1> <op> <value2>\n", argv[0]);
+        fprintf(stderr, "\nOperations:\n");
+        fprintf(stderr, "  +     addition        %s 2 + 3\n", argv[0]);
+        fprintf(stderr, "  -     subtraction     %s 10 - 4\n", argv[0]);
+        fprintf(stderr, "  '*'   multiplication  %s 3 '*' 7\n", argv[0]);
+        fprintf(stderr, "  /     division        %s 10 / 2\n", argv[0]);
+        fprintf(stderr, "  '^'   power           %s 2 '^' 8\n", argv[0]);
+        fprintf(stderr, "  '!'   factorial       %s 5 '!' 0\n", argv[0]);
+        fprintf(stderr, "\nNote: *, ^, ! are shell special characters and must be quoted.\n");
+        fprintf(stderr, "      For factorial, value2 is ignored.\n");
         return;
     }
-    Task task;
-    parse(argc, argv, task);
     calculate(task);
     output(task);
 }

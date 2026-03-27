@@ -8,3 +8,13 @@ g++ src/app.cpp src/main.cpp src/math.cpp -o calculator
 Примеры команды для запуска:
 
 ./calculator 1 + 2
+
+./calculator 1 - 2
+
+./calculator 1 '^' 2
+
+./calculator 1 / 2
+
+./calculator 1 '*' 2
+
+./calculator 3 ! 0
