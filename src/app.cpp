@@ -2,7 +2,7 @@
 #include "libmath.h"
 #include <cstdio>
 #include <cstdlib>
-#include <getopt.h>
+#include <cstring>
 struct Task
 {
     int value1{};
@@ -13,21 +13,16 @@ struct Task
 };
 static bool parse(int argc, char** argv, Task& task)
 {
-    static const option long_options[] = {
-        {"help", no_argument, nullptr, 'h'},
-        {nullptr, 0,          nullptr,  0 }
-    };
-    int opt;
-    while ((opt = getopt_long(argc, argv, "+h", long_options, nullptr)) != -1)
+    for (int i = 1; i < argc; i++)
     {
-        if (opt == 'h')
+        if (std::strcmp(argv[i], "-h") == 0 || std::strcmp(argv[i], "--help") == 0)
             return false;
     }
-    if (argc - optind != 3)
+    if (argc != 4)
         return false;
-    task.value1    = std::atoi(argv[optind]);
-    task.operation = argv[optind + 1][0];
-    task.value2    = std::atoi(argv[optind + 2]);
+    task.value1    = std::atoi(argv[1]);
+    task.operation = argv[2][0];
+    task.value2    = std::atoi(argv[3]);
     return true;
 }
 static void calculate(Task& task)
