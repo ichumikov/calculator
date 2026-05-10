@@ -24,9 +24,17 @@ else()
     message(WARNING "Clang-tidy not found")
 endif()
 
+# --- nlohmann/json ---
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.11.3
+)
+FetchContent_MakeAvailable(nlohmann_json)
+
 add_executable(calculator
     src/main.cpp
-    src/app.cpp
+    src/calculator.cpp
 )
 
 target_include_directories(calculator
@@ -37,4 +45,5 @@ target_include_directories(calculator
 target_link_libraries(calculator
     PRIVATE
     libmath
+    nlohmann_json::nlohmann_json
 )
