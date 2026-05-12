@@ -40,6 +40,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
+# --- googletest ---
+FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG v1.14.0
+)
+FetchContent_MakeAvailable(googletest)
+
 add_executable(calculator
     src/main.cpp
     src/calculator.cpp
@@ -57,3 +65,28 @@ target_link_libraries(calculator
     nlohmann_json::nlohmann_json
     spdlog::spdlog
 )
+
+# --- tests ---
+enable_testing()
+
+add_executable(calculator_tests
+    tests/calculator_test.cpp
+    src/calculator.cpp
+    src/logger.cpp
+)
+
+target_include_directories(calculator_tests
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+)
+
+target_link_libraries(calculator_tests
+    PRIVATE
+    libmath
+    nlohmann_json::nlohmann_json
+    spdlog::spdlog
+    GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(calculator_tests)
