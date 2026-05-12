@@ -1,6 +1,6 @@
 #include "logger.h"
-#include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 
 Logger::Logger()
 {
@@ -10,7 +10,7 @@ Logger::Logger()
 
 Logger& Logger::instance()
 {
-    static Logger logger; 
+    static Logger logger;
     return logger;
 }
 

@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include "calculator.h"
+#include <gtest/gtest.h>
 
 TEST(CalculatorTest, Addition)
 {

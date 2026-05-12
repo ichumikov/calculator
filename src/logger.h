@@ -1,8 +1,7 @@
 #pragma once
 #include <string>
 
-class Logger
-{
+class Logger {
 public:
     static Logger& instance();
 
@@ -10,5 +9,5 @@ public:
     void error(const std::string& message);
 
 private:
-    Logger(); 
+    Logger();
 };

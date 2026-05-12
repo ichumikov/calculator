@@ -1,15 +1,14 @@
 #pragma once
 #include <string>
 
-class Calculator
-{
+class Calculator {
 public:
-Calculator(const std::string& json);
+    Calculator(const std::string& json);
 
-int calculate();
+    int calculate();
 
 private:
-int value1{};
-char operation {};
-int value2{};
+    int value1 {};
+    char operation {};
+    int value2 {};
 };
