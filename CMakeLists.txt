@@ -51,7 +51,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(calculator
     src/main.cpp
-    src/calculator.cpp
+    src/app.cpp
     src/logger.cpp
 )
 
@@ -72,7 +72,7 @@ enable_testing()
 
 add_executable(calculator_tests
     tests/calculator_test.cpp
-    src/calculator.cpp
+    src/app.cpp
     src/logger.cpp
 )
 

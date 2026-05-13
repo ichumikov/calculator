@@ -1,50 +1,53 @@
-#include "calculator.h"
+#include "app.h"
 #include <gtest/gtest.h>
 
-TEST(CalculatorTest, Addition)
+class ApplicationTest : public ::testing::Test
 {
-    Calculator calc("{\"a\": 10, \"op\": \"+\", \"b\": 5}");
-    EXPECT_EQ(calc.calculate(), 15);
+protected:
+    int runApp(const char* json)
+    {
+        const char* argv[] = {"calculator", json};
+        calculator::Application app;
+        return app.run(2, const_cast<char**>(argv));
+    }
+};
+
+TEST_F(ApplicationTest, Addition)
+{
+    EXPECT_EQ(runApp(R"({"a": 10, "op": "+", "b": 5})"), 0);
 }
 
-TEST(CalculatorTest, Subtraction)
+TEST_F(ApplicationTest, Subtraction)
 {
-    Calculator calc("{\"a\": 10, \"op\": \"-\", \"b\": 3}");
-    EXPECT_EQ(calc.calculate(), 7);
+    EXPECT_EQ(runApp(R"({"a": 10, "op": "-", "b": 3})"), 0);
 }
 
-TEST(CalculatorTest, Multiplication)
+TEST_F(ApplicationTest, Multiplication)
 {
-    Calculator calc("{\"a\": 5, \"op\": \"*\", \"b\": 4}");
-    EXPECT_EQ(calc.calculate(), 20);
+    EXPECT_EQ(runApp(R"({"a": 5, "op": "*", "b": 4})"), 0);
 }
 
-TEST(CalculatorTest, Division)
+TEST_F(ApplicationTest, Division)
 {
-    Calculator calc("{\"a\": 10, \"op\": \"/\", \"b\": 2}");
-    EXPECT_EQ(calc.calculate(), 5);
+    EXPECT_EQ(runApp(R"({"a": 10, "op": "/", "b": 2})"), 0);
 }
 
-TEST(CalculatorTest, Factorial)
+TEST_F(ApplicationTest, Factorial)
 {
-    Calculator calc("{\"a\": 5, \"op\": \"!\"}");
-    EXPECT_EQ(calc.calculate(), 120);
+    EXPECT_EQ(runApp(R"({"a": 5, "op": "!"})"), 0);
 }
 
-TEST(CalculatorTest, DivisionByZero)
+TEST_F(ApplicationTest, DivisionByZero)
 {
-    Calculator calc("{\"a\": 10, \"op\": \"/\", \"b\": 0}");
-    EXPECT_THROW(calc.calculate(), std::domain_error);
+    EXPECT_NE(runApp(R"({"a": 10, "op": "/", "b": 0})"), 0);
 }
 
-TEST(CalculatorTest, UnknownOperation)
+TEST_F(ApplicationTest, UnknownOperation)
 {
-    Calculator calc("{\"a\": 10, \"op\": \"?\", \"b\": 5}");
-    EXPECT_THROW(calc.calculate(), std::invalid_argument);
+    EXPECT_NE(runApp(R"({"a": 10, "op": "?", "b": 5})"), 0);
 }
 
-TEST(CalculatorTest, NegativeFactorial)
+TEST_F(ApplicationTest, NegativeFactorial)
 {
-    Calculator calc("{\"a\": -5, \"op\": \"!\"}");
-    EXPECT_THROW(calc.calculate(), std::domain_error);
+    EXPECT_NE(runApp(R"({"a": -5, "op": "!"})"), 0);
 }

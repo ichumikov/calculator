@@ -5,13 +5,16 @@
             "name": "Debug Calculator",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/calculator",
-            "args": ["{\"a\": 10, \"op\": \"+\", \"b\": 5}"],
+            "program": "/home/igor/calculator/build/calculator",
+            "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
+            "cwd": "/home/igor/calculator",
+            "environment": [
+                { "name": "CALC_INPUT", "value": "{\"a\":10,\"op\":\"-\",\"b\":5}" }
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
