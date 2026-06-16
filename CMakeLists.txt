@@ -48,11 +48,13 @@ FetchContent_Declare(
     GIT_TAG v1.14.0
 )
 FetchContent_MakeAvailable(googletest)
+find_package(PostgreSQL REQUIRED)
 
 add_executable(calculator
     src/main.cpp
     src/app.cpp
     src/logger.cpp
+    src/database.cpp
 )
 
 target_include_directories(calculator
@@ -65,6 +67,7 @@ target_link_libraries(calculator
     libmath
     nlohmann_json::nlohmann_json
     spdlog::spdlog
+    PostgreSQL::PostgreSQL
 )
 
 # --- tests ---
@@ -74,6 +77,7 @@ add_executable(calculator_tests
     tests/calculator_test.cpp
     src/app.cpp
     src/logger.cpp
+    src/database.cpp
 )
 
 target_include_directories(calculator_tests
@@ -86,6 +90,7 @@ target_link_libraries(calculator_tests
     libmath
     nlohmann_json::nlohmann_json
     spdlog::spdlog
+    PostgreSQL::PostgreSQL
     GTest::gtest_main
 )
 

@@ -8,21 +8,40 @@
 namespace calculator
 {
 
+Application::Application()
+{
+    dataBase_.connect();
+    dataBase_.warmUpCache();
+}
+
+Application::~Application()
+{
+    dataBase_.disconnect();
+}
 int Application::run(int argc, char** argv)
 {
     try
     {
         getTask(argc, argv);
-        makeCalculate();
+        std::optional<Task> cached = dataBase_.getRecord(task_);
+        if (!cached)
+        {
+            makeCalculate();
+            dataBase_.writeRecord(task_);
+        }
+        else
+        {
+            task_ = *cached;
+        }
         printResult();
         task_.status = 0;
     }
-    catch (const std::exception& e)
-    {
-        Logger::instance().error(e.what());
-        task_.status = 1;
-    }
-    return task_.status;
+        catch (const std::exception& e)
+        {
+            Logger::instance().error(e.what());
+            task_.status = 1;
+        }
+        return task_.status;
 }
 
 void Application::getTask(int argc, char** argv)
