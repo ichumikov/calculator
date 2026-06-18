@@ -1,108 +1,81 @@
 #include "app.h"
 #include "libmath.h"
+#include <stdexcept>
 #include <cstdio>
-#include <cstdlib>
-#include <cstring>
-struct Task
+#include <nlohmann/json.hpp>
+#include "logger.h"
+
+namespace calculator
 {
-    int value1{};
-    char operation{};
-    int value2{};
-    int status{};
-    int result{};
-};
-static bool parse(int argc, char** argv, Task& task)
+
+int Application::run(int argc, char** argv)
 {
-    for (int i = 1; i < argc; i++)
+    try
     {
-        if (std::strcmp(argv[i], "-h") == 0 || std::strcmp(argv[i], "--help") == 0)
-            return false;
+        getTask(argc, argv);
+        makeCalculate();
+        printResult();
+        task_.status = 0;
     }
-    if (argc != 4)
-        return false;
-    task.value1    = std::atoi(argv[1]);
-    task.operation = argv[2][0];
-    task.value2    = std::atoi(argv[3]);
-    return true;
+    catch (const std::exception& e)
+    {
+        Logger::instance().error(e.what());
+        task_.status = 1;
+    }
+    return task_.status;
 }
-static void calculate(Task& task)
+
+void Application::getTask(int argc, char** argv)
 {
-    switch (task.operation)
+    auto j =nlohmann::json::parse(argv[1]);
+
+    task_.firstValue = j["a"];
+    std::string op = j["op"];
+    task_.operation = op[0];
+    if (j.contains("b"))
+    {
+        task_.secondValue = j["b"];
+    }
+}
+
+void Application::makeCalculate()
+{
+    switch (task_.operation)
     {
     case '+':
-        task.status = math::addition(task.value1, task.value2, task.result);
+        task_.result = math::addition(task_.firstValue, task_.secondValue);
         break;
     case '-':
-        task.status = math::subtraction(task.value1, task.value2, task.result);
+        task_.result = math::subtraction(task_.firstValue, task_.secondValue);
         break;
     case '*':
-        task.status = math::multiplication(task.value1, task.value2, task.result);
+        task_.result = math::multiplication(task_.firstValue, task_.secondValue);
         break;
     case '/':
-        task.status = math::division(task.value1, task.value2, task.result);
+        task_.result = math::division(task_.firstValue, task_.secondValue);
         break;
     case '^':
-        task.status = math::power(task.value1, task.value2, task.result);
+        task_.result= math::power(task_.firstValue, task_.secondValue);
         break;
     case '!':
-        task.status = math::factorial(task.value1, task.result);
+        task_.result = math::factorial(task_.firstValue);
         break;
     default:
-        task.status = 1;
+        throw std::invalid_argument("Unknown operation");
         break;
     }
 }
-static void output(const Task& task)
+
+void Application::printResult() const
 {
-    if (task.status == 0)
+    if (task_.operation == '!')
     {
-        printf("%d %c %d = %d\n", task.value1, task.operation, task.value2, task.result);
-    }
-    else if (task.status == -1)
-    {
-        printf("Error! Division by zero!\n");
-    }
-    else if (task.status == -2)
-    {
-        printf("Error! Factorial for negative number!\n");
-    }
-    else if (task.status == -3)
-    {
-        printf("Error! Integer overflow!\n");
-    }
-    else if (task.status == -4)
-    {
-        printf("Error! Negative power is not supported for integer result!\n");
-    }
-    else if (task.status == 1)
-    {
-        printf("Error! Unknown operation!\n");
+        printf("%d! = %d\n", task_.firstValue, task_.result);
     }
     else
     {
-        printf("Unknown error\n");
+        printf("%d %c %d = %d\n", task_.firstValue, task_.operation, task_.secondValue, task_.result);
     }
 }
-namespace app
-{
-void run(int argc, char** argv)
-{
-    Task task;
-    if (!parse(argc, argv, task))
-    {
-        fprintf(stderr, "Usage: %s <value1> <op> <value2>\n", argv[0]);
-        fprintf(stderr, "\nOperations:\n");
-        fprintf(stderr, "  +     addition        %s 2 + 3\n", argv[0]);
-        fprintf(stderr, "  -     subtraction     %s 10 - 4\n", argv[0]);
-        fprintf(stderr, "  '*'   multiplication  %s 3 '*' 7\n", argv[0]);
-        fprintf(stderr, "  /     division        %s 10 / 2\n", argv[0]);
-        fprintf(stderr, "  '^'   power           %s 2 '^' 8\n", argv[0]);
-        fprintf(stderr, "  '!'   factorial       %s 5 '!' 0\n", argv[0]);
-        fprintf(stderr, "\nNote: *, ^, ! are shell special characters and must be quoted.\n");
-        fprintf(stderr, "      For factorial, value2 is ignored.\n");
-        return;
-    }
-    calculate(task);
-    output(task);
-}
-}
+
+} // namespace calculator
