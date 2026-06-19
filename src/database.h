@@ -30,8 +30,8 @@ public:
     ~DataBase();
     DataBase(const DataBase&) = delete;
     DataBase& operator=(const DataBase&) = delete;
-    DataBase(DataBase&&) = default;
-    DataBase& operator=(DataBase&&) = default;
+    DataBase(DataBase&&) noexcept = default;
+    DataBase& operator=(DataBase&&) noexcept = default;
 
     void connect();
     void disconnect();
