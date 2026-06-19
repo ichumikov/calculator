@@ -1,37 +1,37 @@
 #pragma once
-#include <string>
-#include <memory>
-#include <unordered_map>
-#include <optional>
-#include <libpq-fe.h>
 #include <cstdint>
+#include <libpq-fe.h>
+#include <memory>
+#include <optional>
+#include <string>
+#include <unordered_map>
 
-namespace calculator
-{
+namespace calculator {
 
-struct Task
-{
-    int firstValue{0};
-    int secondValue{0};
-    char operation{'\0'};
-    int result{0};
-    int status{0};
+struct Task {
+    int firstValue { 0 };
+    int secondValue { 0 };
+    char operation { '\0' };
+    int result { 0 };
+    int status { 0 };
 };
 
-class DataBase
-{
+class DataBase {
 public:
-    struct Config
-    {
-        std::string host{"localhost"};
-        std::uint16_t port{5432};
-        std::string username {"postgres"};
-        std::string password{"postgres"};
-        std::string dbname{"calculator_db"};
+    struct Config {
+        std::string host { "localhost" };
+        std::uint16_t port { 5432 };
+        std::string username { "postgres" };
+        std::string password { "postgres" };
+        std::string dbname { "calculator_db" };
     };
 
     DataBase();
     ~DataBase();
+    DataBase(const DataBase&) = delete;
+    DataBase& operator=(const DataBase&) = delete;
+    DataBase(DataBase&&) = default;
+    DataBase& operator=(DataBase&&) = default;
 
     void connect();
     void disconnect();
@@ -45,7 +45,7 @@ private:
 
 private:
     Config config_;
-    std::unique_ptr<PGconn, decltype(&PQfinish)> connection_{nullptr, PQfinish};
+    std::unique_ptr<PGconn, decltype(&PQfinish)> connection_ { nullptr, PQfinish };
     std::unordered_map<std::string, Task> cache_;
 };
 

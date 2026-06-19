@@ -1,25 +1,26 @@
 #pragma once
 #include "database.h"
 
-namespace calculator
-{
+namespace calculator {
 
-class Application
-{
-  public:
+class Application {
+public:
     Application();
     ~Application();
+    Application(const Application&) = delete;
+    Application& operator=(const Application&) = delete;
+    Application(Application&&) = delete;
+    Application& operator=(Application&&) = delete;
     int run(int argc, char** argv);
 
-  private:
+private:
     void getTask(int argc, char** argv);
     void makeCalculate();
     void printResult() const;
 
-  private:
+private:
     Task task_;
     DataBase dataBase_;
 };
 
-} //namespace calculator
-
+} // namespace calculator

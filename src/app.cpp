@@ -1,12 +1,11 @@
 #include "app.h"
 #include "libmath.h"
-#include <stdexcept>
+#include "logger.h"
 #include <cstdio>
 #include <nlohmann/json.hpp>
-#include "logger.h"
+#include <stdexcept>
 
-namespace calculator
-{
+namespace calculator {
 
 Application::Application()
 {
@@ -20,47 +19,39 @@ Application::~Application()
 }
 int Application::run(int argc, char** argv)
 {
-    try
-    {
+    try {
         getTask(argc, argv);
         std::optional<Task> cached = dataBase_.getRecord(task_);
-        if (!cached)
-        {
+        if (!cached) {
             makeCalculate();
             dataBase_.writeRecord(task_);
-        }
-        else
-        {
+        } else {
             task_ = *cached;
         }
         printResult();
         task_.status = 0;
+    } catch (const std::exception& e) {
+        Logger::instance().error(e.what());
+        task_.status = 1;
     }
-        catch (const std::exception& e)
-        {
-            Logger::instance().error(e.what());
-            task_.status = 1;
-        }
-        return task_.status;
+    return task_.status;
 }
 
 void Application::getTask(int argc, char** argv)
 {
-    auto j =nlohmann::json::parse(argv[1]);
+    auto j = nlohmann::json::parse(argv[1]);
 
     task_.firstValue = j["a"];
     std::string op = j["op"];
     task_.operation = op[0];
-    if (j.contains("b"))
-    {
+    if (j.contains("b")) {
         task_.secondValue = j["b"];
     }
 }
 
 void Application::makeCalculate()
 {
-    switch (task_.operation)
-    {
+    switch (task_.operation) {
     case '+':
         task_.result = math::addition(task_.firstValue, task_.secondValue);
         break;
@@ -74,7 +65,7 @@ void Application::makeCalculate()
         task_.result = math::division(task_.firstValue, task_.secondValue);
         break;
     case '^':
-        task_.result= math::power(task_.firstValue, task_.secondValue);
+        task_.result = math::power(task_.firstValue, task_.secondValue);
         break;
     case '!':
         task_.result = math::factorial(task_.firstValue);
@@ -87,12 +78,9 @@ void Application::makeCalculate()
 
 void Application::printResult() const
 {
-    if (task_.operation == '!')
-    {
+    if (task_.operation == '!') {
         printf("%d! = %d\n", task_.firstValue, task_.result);
-    }
-    else
-    {
+    } else {
         printf("%d %c %d = %d\n", task_.firstValue, task_.operation, task_.secondValue, task_.result);
     }
 }
