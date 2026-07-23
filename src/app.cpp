@@ -4,21 +4,41 @@
 #include <cstdio>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
+#include <csignal>
+#include <pthread.h>
+#include <chrono>
 
 namespace calculator {
 
-Application::Application()
+Application::Application() : server_(io_, 8080, running_)
 {
     dataBase_.connect();
     dataBase_.warmUpCache();
+    sigset_t sigset;
+    sigemptyset(&sigset);
+    sigaddset(&sigset, SIGTERM);
+    pthread_sigmask(SIG_BLOCK, &sigset, nullptr);
+    signalThread_ = std::thread(&Application::runSignalHandler, this);
+    serverThread_ = std::thread(&Server::run, &server_);
 }
 
 Application::~Application()
 {
     dataBase_.disconnect();
+    if(signalThread_.joinable())
+        signalThread_.join();
+    if(serverThread_.joinable())
+        serverThread_.join();
 }
 int Application::run(int argc, char** argv)
 {
+    if (argc < 2) {
+        while (running_) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        return 0;
+    }
+
     try {
         getTask(argc, argv);
         std::optional<Task> cached = dataBase_.getRecord(task_);
@@ -49,31 +69,36 @@ void Application::getTask(int argc, char** argv)
     }
 }
 
+void Application::calculate(Task& task)
+{
+    switch (task.operation) {
+        case '+':
+            task.result = math::addition(task.firstValue, task.secondValue);
+            break;
+        case '-':
+            task.result = math::subtraction(task.firstValue, task.secondValue);
+            break;
+        case '*':
+            task.result = math::multiplication(task.firstValue, task.secondValue);
+            break;
+        case '/':
+            task.result = math::division(task.firstValue, task.secondValue);
+            break;
+        case '^':
+            task.result = math::power(task.firstValue, task.secondValue);
+            break;
+        case '!':
+            task.result = math::factorial(task.firstValue);
+            break;
+        default:
+            throw std::invalid_argument("Unknown operation");
+            break;
+        } 
+}
+
 void Application::makeCalculate()
 {
-    switch (task_.operation) {
-    case '+':
-        task_.result = math::addition(task_.firstValue, task_.secondValue);
-        break;
-    case '-':
-        task_.result = math::subtraction(task_.firstValue, task_.secondValue);
-        break;
-    case '*':
-        task_.result = math::multiplication(task_.firstValue, task_.secondValue);
-        break;
-    case '/':
-        task_.result = math::division(task_.firstValue, task_.secondValue);
-        break;
-    case '^':
-        task_.result = math::power(task_.firstValue, task_.secondValue);
-        break;
-    case '!':
-        task_.result = math::factorial(task_.firstValue);
-        break;
-    default:
-        throw std::invalid_argument("Unknown operation");
-        break;
-    }
+    calculate(task_);
 }
 
 void Application::printResult() const
@@ -83,6 +108,16 @@ void Application::printResult() const
     } else {
         printf("%d %c %d = %d\n", task_.firstValue, task_.operation, task_.secondValue, task_.result);
     }
+}
+
+void Application::runSignalHandler()
+{
+    sigset_t sigset;
+    sigemptyset(&sigset);
+    sigaddset(&sigset, SIGTERM);
+    int sig = 0;
+    sigwait(&sigset, &sig);
+    running_ = false;
 }
 
 } // namespace calculator

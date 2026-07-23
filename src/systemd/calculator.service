@@ -1,0 +1,9 @@
+[Unit]
+Description=Calculator Service
+
+[Service]
+ExecStart=/usr/bin/calculator
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

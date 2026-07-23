@@ -47,14 +47,17 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG v1.14.0
 )
+set(INSTALL_GTEST OFF)
 FetchContent_MakeAvailable(googletest)
 find_package(PostgreSQL REQUIRED)
+find_package(Boost REQUIRED)
 
 add_executable(calculator
     src/main.cpp
     src/app.cpp
     src/logger.cpp
     src/database.cpp
+    src/server.cpp
 )
 
 target_include_directories(calculator
@@ -68,6 +71,7 @@ target_link_libraries(calculator
     nlohmann_json::nlohmann_json
     spdlog::spdlog
     PostgreSQL::PostgreSQL
+    Boost::boost
 )
 
 # --- tests ---
@@ -78,6 +82,16 @@ add_executable(calculator_tests
     src/app.cpp
     src/logger.cpp
     src/database.cpp
+    src/server.cpp
+)
+
+add_executable(calculator_client
+    src/client.cpp
+)
+
+target_link_libraries(calculator_client
+    PRIVATE
+    Boost::boost
 )
 
 target_include_directories(calculator_tests
@@ -96,3 +110,14 @@ target_link_libraries(calculator_tests
 
 include(GoogleTest)
 gtest_discover_tests(calculator_tests)
+
+install(TARGETS calculator DESTINATION bin)
+install(FILES src/systemd/calculator.service
+        DESTINATION lib/systemd/system)
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_PACKAGE_NAME "calculator")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Igor Chumikov")
+
+include(CPack)
